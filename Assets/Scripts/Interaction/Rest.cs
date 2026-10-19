@@ -3,14 +3,14 @@ using UnityEngine;
 public class Rest : Interactable
 {
     [Header("Rest Settings")]
-    [Tooltip("If true, pressing Enter while near this object skips to the next day. If false, it fast-forwards in real time.")]
+    [Tooltip("ON: resting skips straight to the next day. OFF: time fast-forwards in real time.")]
     public bool instantSkip = true;
 
-    [Tooltip("Only used if Instant Skip is OFF — how many real seconds the fast-forward takes.")]
+    [Tooltip("Only used if Instant Skip is OFF. How many real seconds the fast-forward takes.")]
     public float fastForwardDuration = 2f;
 
     private ITimeProvider timeProvider;
-    private bool  isFastForwarding = false;
+    private bool isFastForwarding = false;
     private float originalDayDuration;
 
     void Start()
@@ -18,9 +18,7 @@ public class Rest : Interactable
         timeProvider = ServiceLocator.Get<ITimeProvider>();
 
         if (timeProvider == null)
-            Debug.LogError("Rest.cs could not find an ITimeProvider via ServiceLocator!");
-
-        dialogueText = "Press Enter to rest and skip to the next day.";
+            Debug.LogError("Rest could not find an ITimeProvider via ServiceLocator!");
     }
 
     void Update()
@@ -43,7 +41,7 @@ public class Rest : Interactable
         if (isFastForwarding) return;
 
         if (instantSkip) SkipToNextDay();
-        else             StartFastForward();
+        else StartFastForward();
     }
 
     private void SkipToNextDay()
@@ -54,20 +52,20 @@ public class Rest : Interactable
 
     private void StartFastForward()
     {
-        isFastForwarding      = true;
-        originalDayDuration   = timeProvider.DayDurationInSeconds;
+        isFastForwarding = true;
+        originalDayDuration = timeProvider.DayDurationInSeconds;
 
         float remainingFraction = 1f - timeProvider.CurrentTimeOfDay;
         if (remainingFraction <= 0f) remainingFraction = 1f;
 
         timeProvider.DayDurationInSeconds = originalDayDuration * remainingFraction / fastForwardDuration;
-        Debug.Log($"Rest: Fast-forwarding to next day over {fastForwardDuration} real second(s).");
+        Debug.Log($"Rest: Fast-forwarding over {fastForwardDuration} real second(s).");
     }
 
     private void StopFastForward()
     {
         isFastForwarding = false;
         timeProvider.DayDurationInSeconds = originalDayDuration;
-        Debug.Log("Rest: Fast-forward complete. Day has changed, time restored to normal speed.");
+        Debug.Log("Rest: Fast-forward complete. Time restored to normal speed.");
     }
 }

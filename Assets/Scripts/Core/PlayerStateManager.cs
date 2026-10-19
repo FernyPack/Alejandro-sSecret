@@ -6,6 +6,7 @@ public enum PlayerState
     Free,
     Dialogue,
     Cutscene,
+    Shop,
 }
 
 public static class PlayerStateManager

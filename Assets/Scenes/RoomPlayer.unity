@@ -1080,6 +1080,7 @@ GameObject:
   - component: {fileID: 432401569}
   - component: {fileID: 432401567}
   - component: {fileID: 432401570}
+  - component: {fileID: 432401571}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1146,6 +1147,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d980d6149fa1d48b708d8515bf46ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
+--- !u!114 &432401571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432401566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4711c476a05006d4ca555b0704c4fa06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CursorManager
+  rules:
+  - state: 0
+    showCursor: 0
+  - state: 1
+    showCursor: 1
+  - state: 2
+    showCursor: 0
+  - state: 3
+    showCursor: 1
+  showCursorIfNoRule: 0
 --- !u!1 &438518733
 GameObject:
   m_ObjectHideFlags: 0
@@ -4137,6 +4160,7 @@ GameObject:
   - component: {fileID: 1477279495}
   - component: {fileID: 1477279494}
   - component: {fileID: 1477279497}
+  - component: {fileID: 1477279498}
   m_Layer: 0
   m_Name: Option
   m_TagString: Untagged
@@ -4241,14 +4265,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayUI
   inputReader: {fileID: 11400000, guid: a3a60d66fcdf16f4dac59a884135908a, type: 2}
+  allowCancel: 1
   yesNoPanel: {fileID: 897201652}
   yesButton: {fileID: 2023560953}
   noButton: {fileID: 1527028190}
   inventoryListPanel: {fileID: 872553900}
   inventoryListContainer: {fileID: 1215763939}
   seedListItemPrefab: {fileID: 291840404977297548, guid: 3162d30ae6f3b4c4681117432531d1d9, type: 3}
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1477279498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477279492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1522095026
 GameObject:
   m_ObjectHideFlags: 0
@@ -4447,7 +4487,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -5278,6 +5318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc711ffe962a10341b8fdfeda20b8547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopUI
+  inputReader: {fileID: 11400000, guid: a3a60d66fcdf16f4dac59a884135908a, type: 2}
   shopCanvas: {fileID: 1105938041}
   buySeedButton: {fileID: 1300549662}
   sellCropButton: {fileID: 517521287}
@@ -6108,7 +6149,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.7610062, g: 0.7610062, b: 0.7610062, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}

@@ -138,17 +138,6 @@
                 },
                 {
                     "name": "",
-                    "id": "a1b2c3d4-000e-0001-0001-000000000001",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ddc798bd-5f1e-43c4-87f4-c6b0e6721190",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -302,17 +291,6 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "a1b2c3d4-000f-0002-0001-000000000001",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Confirm",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

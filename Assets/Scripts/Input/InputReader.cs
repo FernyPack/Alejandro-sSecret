@@ -41,6 +41,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
                 break;
             case PlayerState.Dialogue:
             case PlayerState.Cutscene:
+            case PlayerState.Shop:
                 EnableUIInput();
                 break;
         }
