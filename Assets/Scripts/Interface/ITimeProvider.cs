@@ -5,7 +5,10 @@ public interface ITimeProvider
     int   CurrentDay           { get; }
     int   CurrentMonth         { get; }
     int   CurrentYear          { get; }
+    float TotalElapsedDays     { get; }
 
     string GetFormattedDate();
     string GetFormattedTime();
+
+    void SkipToNextDay();
 }

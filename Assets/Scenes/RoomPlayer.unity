@@ -1102,6 +1102,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
   dayDurationInSeconds: 60
   currentTimeOfDay: 0
+  hoursInDay: 24
+  minutesInHour: 60
+  secondsInMinute: 60
+  daysInMonth: 30
+  monthsInYear: 12
   currentSecond: 0
   currentMinute: 0
   currentHour: 0
@@ -1593,6 +1598,7 @@ MonoBehaviour:
   dialogueText: Sleep?
   instantSkip: 1
   fastForwardDuration: 2
+  restPrompt: Press Enter to rest and skip to the next day.
 --- !u!1 &483867971
 GameObject:
   m_ObjectHideFlags: 0

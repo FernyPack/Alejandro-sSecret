@@ -43,7 +43,7 @@ public class Farming : Interactable
     private Material      wetSoilMaterial;
     private float         growthTimer = 0f;
     private ITimeProvider timeProvider;
-    private float         lastTimeOfDay;
+    private float         lastTotalDays;
 
     void Start()
     {
@@ -52,7 +52,7 @@ public class Farming : Interactable
 
         timeProvider = ServiceLocator.Get<ITimeProvider>();
         if (timeProvider != null)
-            lastTimeOfDay = timeProvider.CurrentTimeOfDay;
+            lastTotalDays = timeProvider.TotalElapsedDays;
 
         if (optionUI == null)
             optionUI = FindFirstObjectByType<OptionUI>();
@@ -155,11 +155,10 @@ public class Farming : Interactable
 
         if (timeProvider != null)
         {
-            float now   = timeProvider.CurrentTimeOfDay;
-            float delta = now - lastTimeOfDay;
-            if (delta < 0) delta += 1f;
+            float now   = timeProvider.TotalElapsedDays;
+            float delta = Mathf.Max(0f, now - lastTotalDays);
             growthTimer   += delta;
-            lastTimeOfDay  = now;
+            lastTotalDays  = now;
         }
         else
         {
@@ -184,7 +183,7 @@ public class Farming : Interactable
         isWatered   = false;
 
         if (timeProvider != null)
-            lastTimeOfDay = timeProvider.CurrentTimeOfDay;
+            lastTotalDays = timeProvider.TotalElapsedDays;
 
         TransitionToStage(GrowthStage.Growing);
     }
@@ -193,7 +192,7 @@ public class Farming : Interactable
     {
         isWatered = true;
         if (timeProvider != null)
-            lastTimeOfDay = timeProvider.CurrentTimeOfDay;
+            lastTotalDays = timeProvider.TotalElapsedDays;
         RefreshVisuals();
     }
 

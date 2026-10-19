@@ -10,6 +10,18 @@ public class TimeManager : MonoBehaviour, ITimeProvider
     [Range(0f, 1f)]
     public float currentTimeOfDay = 0f;
 
+    [Header("Calendar Settings")]
+    [Tooltip("Hours in one in-game day.")]
+    public int hoursInDay = 24;
+    [Tooltip("Minutes in one in-game hour.")]
+    public int minutesInHour = 60;
+    [Tooltip("Seconds in one in-game minute.")]
+    public int secondsInMinute = 60;
+    [Tooltip("Days in one in-game month.")]
+    public int daysInMonth = 30;
+    [Tooltip("Months in one in-game year.")]
+    public int monthsInYear = 12;
+
     [Header("Calculated Values (Read Only)")]
     public int currentSecond;
     public int currentMinute;
@@ -18,13 +30,6 @@ public class TimeManager : MonoBehaviour, ITimeProvider
     public int currentMonth = 1;
     public int currentYear  = 2026;
 
-    private const int HoursInDay      = 24;
-    private const int MinutesInHour   = 60;
-    private const int SecondsInMinute = 60;
-    private const int DaysInMonth     = 30;
-    private const int MonthsInYear    = 12;
-
-    // ── ITimeProvider ──────────────────────────────────────────────────────
     public float CurrentTimeOfDay
     {
         get => currentTimeOfDay;
@@ -41,7 +46,10 @@ public class TimeManager : MonoBehaviour, ITimeProvider
     public int CurrentMonth => currentMonth;
     public int CurrentYear  => currentYear;
 
-    // ── Unity Lifecycle ────────────────────────────────────────────────────
+    public float TotalElapsedDays => completedDays + currentTimeOfDay;
+
+    private int completedDays = 0;
+
     void Awake()
     {
         ServiceLocator.Register<ITimeProvider>(this);
@@ -53,7 +61,6 @@ public class TimeManager : MonoBehaviour, ITimeProvider
         CalculateInGameClock();
     }
 
-    // ── ITimeProvider methods ──────────────────────────────────────────────
     public string GetFormattedDate()
         => $"{currentMonth:D2}/{currentDay:D2}/{currentYear}";
 
@@ -65,36 +72,50 @@ public class TimeManager : MonoBehaviour, ITimeProvider
         return $"{hour12}:{currentMinute:D2} {period}";
     }
 
-    // ── Private ────────────────────────────────────────────────────────────
+    public void SkipToNextDay()
+    {
+        currentTimeOfDay = 0f;
+        AdvanceCalendarDay();
+        UpdateClockDisplay();
+        Debug.Log("[TimeManager] Skipped to the start of the next day.");
+    }
+
     private void CalculateInGameClock()
     {
         if (dayDurationInSeconds <= 0) dayDurationInSeconds = 1f;
 
         currentTimeOfDay += Time.deltaTime / dayDurationInSeconds;
 
-        if (currentTimeOfDay >= 1f)
+        while (currentTimeOfDay >= 1f)
         {
-            currentTimeOfDay = 0f;
+            currentTimeOfDay -= 1f;
             AdvanceCalendarDay();
         }
 
-        float totalSecondsInDay     = HoursInDay * MinutesInHour * SecondsInMinute;
+        UpdateClockDisplay();
+    }
+
+    private void UpdateClockDisplay()
+    {
+        float secondsPerHour        = minutesInHour * secondsInMinute;
+        float totalSecondsInDay     = hoursInDay * secondsPerHour;
         float currentSecondsElapsed = currentTimeOfDay * totalSecondsInDay;
 
-        currentHour   = Mathf.FloorToInt(currentSecondsElapsed / (MinutesInHour * SecondsInMinute));
-        float remMins = currentSecondsElapsed % (MinutesInHour * SecondsInMinute);
-        currentMinute = Mathf.FloorToInt(remMins / SecondsInMinute);
-        currentSecond = Mathf.FloorToInt(remMins % SecondsInMinute);
+        currentHour   = Mathf.FloorToInt(currentSecondsElapsed / secondsPerHour);
+        float remMins = currentSecondsElapsed % secondsPerHour;
+        currentMinute = Mathf.FloorToInt(remMins / secondsInMinute);
+        currentSecond = Mathf.FloorToInt(remMins % secondsInMinute);
     }
 
     private void AdvanceCalendarDay()
     {
+        completedDays++;
         currentDay++;
-        if (currentDay > DaysInMonth)
+        if (currentDay > daysInMonth)
         {
             currentDay = 1;
             currentMonth++;
-            if (currentMonth > MonthsInYear)
+            if (currentMonth > monthsInYear)
             {
                 currentMonth = 1;
                 currentYear++;
