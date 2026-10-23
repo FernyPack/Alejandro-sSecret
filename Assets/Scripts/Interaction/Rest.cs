@@ -3,47 +3,52 @@ using UnityEngine;
 public class Rest : Interactable
 {
     [Header("Rest Settings")]
-    [Tooltip("ON = instantly skip to the next day. OFF = fast-forward in real time.")]
     public bool instantSkip = true;
-
-    [Tooltip("Only used if Instant Skip is OFF. How many real seconds the fast-forward takes.")]
     public float fastForwardDuration = 2f;
+
+    [Header("UI Reference")]
+    public OptionUI optionUI;
 
     [Header("Rest Dialogue (Editable in Inspector)")]
     [TextArea(2, 5)]
-    public string restPrompt = "Press Enter to rest and skip to the next day.";
+    public string restPrompt = "Rest and skip to the next day?";
+
+    [TextArea(2, 5)]
+    public string wakeUpDialogue = "You slept well. A new day begins!";
 
     private ITimeProvider timeProvider;
-    private bool  isFastForwarding = false;
+    private PlayerAction pendingPlayerAction;
+    private bool isFastForwarding = false;
     private float originalDayDuration;
-    private int   startDay;
-    private int   startMonth;
-    private int   startYear;
+    private float previousTimeOfDay;
 
     void Start()
     {
         timeProvider = ServiceLocator.Get<ITimeProvider>();
 
         if (timeProvider == null)
-            Debug.LogError("Rest.cs could not find an ITimeProvider via ServiceLocator!");
+            Debug.LogError("Rest could not find an ITimeProvider via ServiceLocator!");
 
-        dialogueText = restPrompt;
+        if (optionUI == null)
+            optionUI = FindFirstObjectByType<OptionUI>();
     }
 
     void Update()
     {
         if (!isFastForwarding || timeProvider == null) return;
 
-        bool dayChanged = timeProvider.CurrentDay   != startDay
-                       || timeProvider.CurrentMonth != startMonth
-                       || timeProvider.CurrentYear  != startYear;
-
-        if (dayChanged)
+        float now = timeProvider.CurrentTimeOfDay;
+        if (now < previousTimeOfDay)
             StopFastForward();
+        else
+            previousTimeOfDay = now;
     }
 
     public override void Interact(GameObject playerObject)
     {
+        if (timeProvider == null)
+            timeProvider = ServiceLocator.Get<ITimeProvider>();
+
         if (timeProvider == null)
         {
             Debug.LogWarning("Rest: No ITimeProvider found, cannot skip day.");
@@ -52,36 +57,60 @@ public class Rest : Interactable
 
         if (isFastForwarding) return;
 
-        if (instantSkip) SkipToNextDay();
-        else             StartFastForward();
+        if (optionUI == null)
+            optionUI = FindFirstObjectByType<OptionUI>();
+
+        PlayerAction playerAction = playerObject.GetComponent<PlayerAction>();
+        playerAction?.DisplayDialogue(restPrompt);
+
+        optionUI?.ShowYesNo(
+            onYes: () =>
+            {
+                playerAction?.CloseDialogue();
+                BeginRest(playerAction);
+            },
+            onNo: () => playerAction?.CloseDialogue()
+        );
+    }
+
+    private void BeginRest(PlayerAction playerAction)
+    {
+        if (instantSkip)
+        {
+            SkipToNextDay();
+            playerAction?.DisplayDialogue(wakeUpDialogue);
+        }
+        else
+        {
+            pendingPlayerAction = playerAction;
+            StartFastForward();
+        }
     }
 
     private void SkipToNextDay()
     {
-        timeProvider.SkipToNextDay();
-        Debug.Log("Rested! Skipping to the next day.");
+        timeProvider.CurrentTimeOfDay = 1f;
     }
 
     private void StartFastForward()
     {
-        isFastForwarding    = true;
+        isFastForwarding = true;
         originalDayDuration = timeProvider.DayDurationInSeconds;
-        startDay            = timeProvider.CurrentDay;
-        startMonth          = timeProvider.CurrentMonth;
-        startYear           = timeProvider.CurrentYear;
+        previousTimeOfDay = timeProvider.CurrentTimeOfDay;
 
         float remainingFraction = 1f - timeProvider.CurrentTimeOfDay;
-        if (remainingFraction <= 0.0001f) remainingFraction = 1f;
+        if (remainingFraction <= 0f) remainingFraction = 1f;
 
-        float safeDuration = Mathf.Max(0.01f, fastForwardDuration);
-        timeProvider.DayDurationInSeconds = safeDuration / remainingFraction;
-        Debug.Log($"Rest: Fast-forwarding to next day over {safeDuration} real second(s).");
+        float duration = Mathf.Max(0.1f, fastForwardDuration);
+        timeProvider.DayDurationInSeconds = originalDayDuration * remainingFraction / duration;
     }
 
     private void StopFastForward()
     {
         isFastForwarding = false;
         timeProvider.DayDurationInSeconds = originalDayDuration;
-        Debug.Log("Rest: Fast-forward complete. Day has changed, time restored to normal speed.");
+
+        pendingPlayerAction?.DisplayDialogue(wakeUpDialogue);
+        pendingPlayerAction = null;
     }
 }
