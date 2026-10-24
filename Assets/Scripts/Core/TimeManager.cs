@@ -10,6 +10,10 @@ public class TimeManager : MonoBehaviour, ITimeProvider
     [Range(0f, 1f)]
     public float currentTimeOfDay = 0f;
 
+    [Header("Wake Up Settings")]
+    [Tooltip("Hour you wake up after resting. 6 = 6:00 AM, 6.5 = 6:30 AM, 18 = 6:00 PM.")]
+    public float wakeUpHour = 6f;
+
     [Header("Calendar Settings")]
     [Tooltip("Hours in one in-game day.")]
     public int hoursInDay = 24;
@@ -48,6 +52,9 @@ public class TimeManager : MonoBehaviour, ITimeProvider
 
     public float TotalElapsedDays => completedDays + currentTimeOfDay;
 
+    public float WakeUpTimeOfDay
+        => Mathf.Clamp(wakeUpHour, 0f, hoursInDay - 0.01f) / hoursInDay;
+
     private int completedDays = 0;
 
     void Awake()
@@ -74,10 +81,21 @@ public class TimeManager : MonoBehaviour, ITimeProvider
 
     public void SkipToNextDay()
     {
-        currentTimeOfDay = 0f;
-        AdvanceCalendarDay();
-        UpdateClockDisplay();
+        SkipToTimeOfDay(0f);
         Debug.Log("[TimeManager] Skipped to the start of the next day.");
+    }
+
+    public void SkipToTimeOfDay(float targetTimeOfDay)
+    {
+        float target = Mathf.Clamp01(targetTimeOfDay);
+        if (target >= 1f) target = 0f;
+
+        if (currentTimeOfDay >= target)
+            AdvanceCalendarDay();
+
+        currentTimeOfDay = target;
+        UpdateClockDisplay();
+        Debug.Log($"[TimeManager] Skipped to {GetFormattedTime()} on {GetFormattedDate()}.");
     }
 
     private void CalculateInGameClock()
