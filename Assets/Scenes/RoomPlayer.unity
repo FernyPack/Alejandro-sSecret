@@ -5773,7 +5773,7 @@ GameObject:
   - component: {fileID: 1880889710}
   - component: {fileID: 1880889714}
   - component: {fileID: 1880889715}
-  - component: {fileID: 1880889716}
+  - component: {fileID: 1880889717}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5982,7 +5982,7 @@ MonoBehaviour:
     amount: 1
   - seedData: {fileID: 11400000, guid: 177c620d5163ff84c9aae1e4402de445, type: 2}
     amount: 1
---- !u!114 &1880889716
+--- !u!114 &1880889717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5991,15 +5991,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1880889707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f1ce09d4651964f85f4978654b8639, type: 3}
+  m_Script: {fileID: 11500000, guid: 281282df2a916bb43ba8a380e45a16a3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DebugOverlay
-  showOverlay: 1
-  showHitboxes: 1
-  toggleKey: 94
-  colliderColor: {r: 0, g: 1, b: 1, a: 1}
-  interactColor: {r: 0, g: 1, b: 0, a: 1}
-  hitColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_EditorClassIdentifier: Assembly-CSharp::RoomBoundary
+  floor: {fileID: 1976901559}
+  wallHeight: 40
+  wallThickness: 2
+  inset: 1
+  changeBackground: 1
+  followTimeOfDay: 1
+  nightColor:
+    r: 0.04
+    g: 0.04
+    b: 0.08
+    a: 1
+  dayColor:
+    r: 0.55
+    g: 0.72
+    b: 0.88
+    a: 1
+  _cameras: []
 --- !u!1 &1921501257
 GameObject:
   m_ObjectHideFlags: 0
@@ -7254,13 +7265,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5371030064430853864}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0.5, z: 8.874968}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalPosition: {x: 0, y: 0.5, z: 8.874968}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450653517142732}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!4 &4586807293213964967
 Transform:
   m_ObjectHideFlags: 0
