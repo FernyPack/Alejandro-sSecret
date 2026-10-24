@@ -7,6 +7,9 @@ public class Rest : Interactable
     public bool instantSkip = true;
     public float fastForwardDuration = 2f;
 
+    [Tooltip("ON: you wake up at the Wake Up Hour set on the TimeManager. OFF: you wake up at midnight (start of the next day).")]
+    public bool useFixedWakeUpTime = true;
+
     [Header("Fade Settings")]
     [Tooltip("ON: screen fades to black while resting. OFF: no fade.")]
     public bool useFade = true;
@@ -35,8 +38,10 @@ public class Rest : Interactable
     private PlayerAction pendingPlayerAction;
     private bool isFastForwarding = false;
     private bool isResting = false;
+    private bool waitingForMidnight = false;
     private float originalDayDuration;
     private float previousTimeOfDay;
+    private float targetTimeOfDay;
 
     void Start()
     {
@@ -55,10 +60,14 @@ public class Rest : Interactable
         if (!isFastForwarding || timeProvider == null) return;
 
         float now = timeProvider.CurrentTimeOfDay;
+
         if (now < previousTimeOfDay)
+            waitingForMidnight = false;
+
+        previousTimeOfDay = now;
+
+        if (!waitingForMidnight && now >= targetTimeOfDay)
             StopFastForward();
-        else
-            previousTimeOfDay = now;
     }
 
     public override void Interact(GameObject playerObject)
@@ -141,9 +150,14 @@ public class Rest : Interactable
             yield return screenFader.FadeIn(fadeInDuration);
     }
 
+    private float GetTargetTimeOfDay()
+    {
+        return useFixedWakeUpTime ? timeProvider.WakeUpTimeOfDay : 0f;
+    }
+
     private void SkipToNextDay()
     {
-        timeProvider.CurrentTimeOfDay = 1f;
+        timeProvider.SkipToTimeOfDay(GetTargetTimeOfDay());
     }
 
     private void StartFastForward()
@@ -151,8 +165,13 @@ public class Rest : Interactable
         isFastForwarding = true;
         originalDayDuration = timeProvider.DayDurationInSeconds;
         previousTimeOfDay = timeProvider.CurrentTimeOfDay;
+        targetTimeOfDay = GetTargetTimeOfDay();
+        waitingForMidnight = previousTimeOfDay >= targetTimeOfDay;
 
-        float remainingFraction = 1f - timeProvider.CurrentTimeOfDay;
+        float remainingFraction = waitingForMidnight
+            ? (1f - previousTimeOfDay) + targetTimeOfDay
+            : targetTimeOfDay - previousTimeOfDay;
+
         if (remainingFraction <= 0f) remainingFraction = 1f;
 
         float duration = Mathf.Max(0.1f, fastForwardDuration);
