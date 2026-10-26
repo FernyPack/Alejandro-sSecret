@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 // PHONE UI (put on any object in the scene, e.g. an empty "InventoryPhoneUI")
-// Hides the old text on screen and replaces it with a phone that has apps:
+// A phone with apps that shows your stats:
 //   Home screen -> time, date, and app icons
 //   Bag app     -> gold, water can, and each seed type
 //   Farm app    -> crops and total seeds
@@ -17,20 +17,24 @@ using UnityEngine.UI;
 //
 // CONTROLS
 //   P         = open / close phone
-//   I         = open phone straight to the Bag app
-//   1 / 2     = open Bag / Farm app
-//   Backspace = back to home screen
+//   Mouse     = tap an app, or Back / home button to return
 //   Esc       = close phone
+//
+// WHERE TO CHANGE THINGS (search for "EDIT:")
+//   EDIT: COLORS      -> phone and app colors
+//   EDIT: BAG APP     -> what the Bag app shows
+//   EDIT: FARM APP    -> what the Farm app shows
+//   EDIT: HOME SCREEN -> clock, date and app icons (position, size, name)
+//   EDIT: PHONE SIZE  -> size and position of the phone
 public class InventoryPhoneUI : MonoBehaviour
 {
     [Header("Controls")]
-    public Key phoneKey    = Key.P;
-    public Key bagShortcut = Key.I;
+    public Key phoneKey = Key.Q;
 
     [Header("Options")]
-    public bool hideOldHUD = true;   // hide the owner's text HUD
-    public bool showHints  = true;   // small "[P] Phone  [I] Bag" text in the corner
+    public bool showHints = true;   // small "[Q] Phone" text in the corner
 
+    // EDIT: COLORS (r, g, b, alpha from 0 to 1). You can also change these in the Inspector.
     [Header("Colors")]
     public Color phoneBody   = new Color(0.08f, 0.08f, 0.10f, 1f);
     public Color phoneScreen = new Color(0.17f, 0.24f, 0.36f, 1f);
@@ -45,6 +49,7 @@ public class InventoryPhoneUI : MonoBehaviour
     private ITimeProvider _time;
 
     private RectTransform _phone;
+    // EDIT: PHONE SIZE — where the phone sits when open/closed (from the bottom-right corner)
     private Vector2       _phoneShown  = new Vector2(-40f, 40f);
     private Vector2       _phoneHidden = new Vector2(-40f, -650f);
 
@@ -59,7 +64,6 @@ public class InventoryPhoneUI : MonoBehaviour
         _inventory = ServiceLocator.Get<IInventory>();
         _time      = ServiceLocator.Get<ITimeProvider>();
 
-        if (hideOldHUD) HideOldHUD();
         MakeSureEventSystemExists();
         BuildUI();
         ShowApp(PhoneApp.Home);
@@ -74,16 +78,9 @@ public class InventoryPhoneUI : MonoBehaviour
             {
                 if (_open) ClosePhone(); else OpenPhone(PhoneApp.Home);
             }
-            else if (kb[bagShortcut].wasPressedThisFrame)
+            else if (_open && kb.escapeKey.wasPressedThisFrame)
             {
-                if (_open && _currentApp == PhoneApp.Bag) ClosePhone(); else OpenPhone(PhoneApp.Bag);
-            }
-            else if (_open)
-            {
-                if (kb.digit1Key.wasPressedThisFrame)    ShowApp(PhoneApp.Bag);
-                if (kb.digit2Key.wasPressedThisFrame)    ShowApp(PhoneApp.Farm);
-                if (kb.backspaceKey.wasPressedThisFrame) ShowApp(PhoneApp.Home);
-                if (kb.escapeKey.wasPressedThisFrame)    ClosePhone();
+                ClosePhone();
             }
         }
 
@@ -143,6 +140,8 @@ public class InventoryPhoneUI : MonoBehaviour
         if (_currentApp == PhoneApp.Farm) _farmText.text = FarmText();
     }
 
+    // EDIT: BAG APP — each AppendLine is one line on the screen.
+    // <b>bold</b>, <color=#RRGGBB>color</color> and <size=30>size</size> work in the text.
     private string BagText()
     {
         if (_inventory == null) return "No inventory found.";
@@ -165,6 +164,7 @@ public class InventoryPhoneUI : MonoBehaviour
         return sb.ToString();
     }
 
+    // EDIT: FARM APP — the text shown in the Farm app.
     private string FarmText()
     {
         if (_inventory == null) return "";
@@ -172,20 +172,6 @@ public class InventoryPhoneUI : MonoBehaviour
         int seeds = _inventory.SeedInventory.Where(e => e != null).Sum(e => e.amount);
         return $"Crops\n<size=56><b><color=#{accent}>{_inventory.CropCount}</color></b></size>\n\n" +
                $"Seeds in bag: <b>{seeds}</b>";
-    }
-
-    // ── Old HUD ─────────────────────────────────────────────────────────────
-
-    private void HideOldHUD()
-    {
-        PlayerHUD hud = FindFirstObjectByType<PlayerHUD>();
-        if (hud == null) return;
-
-        foreach (TextMeshProUGUI t in new[] { hud.goldText, hud.seedText, hud.waterText,
-                                              hud.cropText, hud.dateText, hud.timeText })
-        {
-            if (t != null) t.gameObject.SetActive(false);
-        }
     }
 
     // Buttons need an EventSystem to be clickable
@@ -211,7 +197,7 @@ public class InventoryPhoneUI : MonoBehaviour
         scaler.matchWidthOrHeight  = 0.5f;
         Transform root = canvasGO.transform;
 
-        // Phone body + screen
+        // Phone body + screen (EDIT: PHONE SIZE -> the last numbers, 300 x 560, are width x height)
         _phone = Box(root, "Phone", phoneBody, new Vector2(1f, 0f), new Vector2(1f, 0f), _phoneHidden, new Vector2(300f, 560f));
         RectTransform screen = Stretch(Box(_phone, "Screen", phoneScreen, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero),
                                        new Vector2(14f, 44f), new Vector2(-14f, -44f));
@@ -220,17 +206,20 @@ public class InventoryPhoneUI : MonoBehaviour
                    new Vector2(0f, 12f), new Vector2(44f, 20f), () => ShowApp(PhoneApp.Home));   // home button
 
         // Small clock at the top of app screens
-        _statusBar = Label(screen, "StatusBar", 18, TextAlignmentOptions.Top, new Vector2(0.5f, 1f), new Vector2(0f, -6f), new Vector2(240f, 26f));
+        _statusBar = Label(screen, "StatusBar", 18, TextAlignmentOptions.Top, new Vector2(0.5f, 1f), new Vector2(0f, -20f), new Vector2(240f, 26f));
 
-        // HOME screen
+        // EDIT: HOME SCREEN
+        // Label(..., size, ..., position (x, y), box size) -> change size or move the clock/date.
+        // MakeButton("Name", color, ..., position (x, y), size (w, h), what happens on tap) -> each app icon.
+        // To add an app: copy a MakeButton line, give it a new name/position, and make its own screen like BAG app below.
         _homeScreen = Stretch(Empty(screen, "Home"), Vector2.zero, Vector2.zero).gameObject;
         _homeTime = Label(_homeScreen.transform, "Time", 60, TextAlignmentOptions.Center, new Vector2(0.5f, 1f), new Vector2(0f, -70f), new Vector2(260f, 80f));
         _homeTime.fontStyle = FontStyles.Bold;
-        _homeDate = Label(_homeScreen.transform, "Date", 20, TextAlignmentOptions.Center, new Vector2(0.5f, 1f), new Vector2(0f, -130f), new Vector2(260f, 30f));
+        _homeDate = Label(_homeScreen.transform, "Date", 20, TextAlignmentOptions.Center, new Vector2(0.5f, 1f), new Vector2(0f, -145f), new Vector2(260f, 30f));
 
-        MakeButton(_homeScreen.transform, "Bag\n<size=14>[1]</size>", bagAppColor, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+        MakeButton(_homeScreen.transform, "Bag", bagAppColor, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                    new Vector2(-62f, -60f), new Vector2(100f, 100f), () => ShowApp(PhoneApp.Bag));
-        MakeButton(_homeScreen.transform, "Farm\n<size=14>[2]</size>", farmAppColor, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+        MakeButton(_homeScreen.transform, "Farm", farmAppColor, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                    new Vector2(62f, -60f), new Vector2(100f, 100f), () => ShowApp(PhoneApp.Farm));
 
         // BAG app
@@ -252,7 +241,7 @@ public class InventoryPhoneUI : MonoBehaviour
         {
             TextMeshProUGUI hint = Label(root, "Hints", 18, TextAlignmentOptions.BottomLeft, Vector2.zero, new Vector2(24f, 18f), new Vector2(400f, 30f));
             hint.rectTransform.pivot = Vector2.zero;
-            hint.text  = $"[{phoneKey}] Phone    [{bagShortcut}] Bag";
+            hint.text  = $"[{phoneKey}] Phone";
             hint.color = new Color(1f, 1f, 1f, 0.6f);
         }
     }
