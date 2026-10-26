@@ -1,12 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Debug helper: put this on the Player object.
-// - Shows position, velocity, state and facing on screen (toggle with F1).
-// - Draws the player's colliders (cyan) and the interaction BoxCast (green/yellow).
-//   Colliders show in the Game view only when the "Gizmos" button in the Game view toolbar is on.
+// DEBUG OVERLAY (put on the Player)
+// Shows the player's position, speed, facing, state and FPS on screen.
+// Draws hitboxes: cyan = player, green = interact range, yellow = touching something.
+// Hitboxes show in the Game view only when its "Gizmos" button is on.
+//
+// CONTROLS
+//   F1 = show / hide
+//   F2 = move to the next corner
+//
+// WHERE TO CHANGE THINGS (search for "EDIT:")
+//   EDIT: KEYS & POSITION -> which keys, which corner, box size
+//   EDIT: COLORS          -> hitbox colors
+//   EDIT: TEXT            -> what the debug box shows
 public class DebugOverlay : MonoBehaviour
 {
+    // EDIT: KEYS & POSITION (also changeable in the Inspector)
     [Header("Toggle")]
     public bool showOverlay  = true;
     public bool showHitboxes = true;
@@ -20,6 +30,7 @@ public class DebugOverlay : MonoBehaviour
     public Vector2 margin        = new Vector2(10, 10);
     public Vector2 overlaySize   = new Vector2(430, 150);
 
+    // EDIT: COLORS
     [Header("Colors")]
     public Color colliderColor = Color.cyan;
     public Color interactColor = Color.green;
@@ -72,6 +83,7 @@ public class DebugOverlay : MonoBehaviour
         Vector3 v   = _rb != null ? _rb.linearVelocity : Vector3.zero;
         Vector3 dir = _movement != null ? _movement.GetLookDirection() : transform.forward;
 
+        // EDIT: TEXT — each line is one row in the debug box
         string text =
             $"<b>DEBUG</b>  ({toggleKey} hide, {moveKey} move)\n" +
             $"Position:  X {p.x:0.00}   Y {p.y:0.00}   Z {p.z:0.00}\n" +
@@ -93,7 +105,7 @@ public class DebugOverlay : MonoBehaviour
         foreach (Collider c in GetComponentsInChildren<Collider>())
             DrawCollider(c);
 
-        // Interaction BoxCast, matching PlayerAction.TryInteract
+        // Interact range (the same box the game uses when you press interact)
         PlayerAction action = _action != null ? _action : GetComponent<PlayerAction>();
         if (action == null) return;
 

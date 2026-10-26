@@ -1,10 +1,14 @@
 using UnityEngine;
 
-// FALL SAFETY
+// FALL SAFETY (put on the Player)
 // If I fall off the map, it puts me back where I was last standing.
 // Also stops me from walking through walls when moving fast.
+//
+// WHERE TO CHANGE THINGS (search for "EDIT:")
+//   EDIT: SETTINGS -> how far you can fall before being moved back
 public class FallSafety : MonoBehaviour
 {
+    // EDIT: SETTINGS (also changeable in the Inspector)
     [Tooltip("How far below the starting height counts as 'fell off the map'.")]
     public float fallDistance = 15f;
 
@@ -32,19 +36,24 @@ public class FallSafety : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Remember the last spot where I was standing on something
         if (IsGrounded())
             _lastSafePosition = transform.position;
+
+        // Fell too far down -> move me back
 
         if (transform.position.y < _killHeight)
             Respawn();
     }
 
+    // Is there ground right below me?
     private bool IsGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance,
                                ~0, QueryTriggerInteraction.Ignore);
     }
 
+    // Put me back on the last safe spot (or where I started)
     private void Respawn()
     {
         Vector3 target = _lastSafePosition.y > _killHeight ? _lastSafePosition : _spawnPosition;

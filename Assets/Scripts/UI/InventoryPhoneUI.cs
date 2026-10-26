@@ -16,7 +16,7 @@ using UnityEngine.UI;
 // While the phone is open the player stops and the mouse appears, so you can tap the apps.
 //
 // CONTROLS
-//   P         = open / close phone
+//   Q         = open / close phone
 //   Mouse     = tap an app, or Back / home button to return
 //   Esc       = close phone
 //
