@@ -905,7 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 876012d81e0340540a429684a65b0c66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
-  dayDurationInSeconds: 1200
+  dayDurationInSeconds: 1800
   currentTimeOfDay: 0
   wakeUpHour: 6
   hoursInDay: 24
@@ -2731,7 +2731,6 @@ Transform:
   - {fileID: 204052328}
   - {fileID: 7342209}
   - {fileID: 344777919}
-  - {fileID: 1744417638}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1051885553
@@ -3243,6 +3242,62 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1234893415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1234893416}
+  - component: {fileID: 1234893417}
+  m_Layer: 0
+  m_Name: LaptopShopUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1234893416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234893415}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1921501258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1234893417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234893415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658af37fd5e5a7248a8f8842b4569e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LaptopShopUI
+  siteName: SeedNet
+  webAddress: https://www.seednet.shop
+  slogan: Fresh seeds delivered to your door
+  windowFrame: {r: 0.8, g: 0.82, b: 0.86, a: 1}
+  tabColor: {r: 0.97, g: 0.97, b: 0.98, a: 1}
+  pageColor: {r: 0.97, g: 0.97, b: 0.98, a: 1}
+  bannerColor: {r: 0.26, g: 0.58, b: 0.34, a: 1}
+  cardColor: {r: 1, g: 1, b: 1, a: 1}
+  buyColor: {r: 0.26, g: 0.58, b: 0.34, a: 1}
+  sellColor: {r: 0.9, g: 0.58, b: 0.2, a: 1}
+  closeColor: {r: 0.86, g: 0.25, b: 0.25, a: 1}
+  textColor: {r: 0.15, g: 0.15, b: 0.18, a: 1}
 --- !u!1 &1265330348
 GameObject:
   m_ObjectHideFlags: 0
@@ -4421,19 +4476,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1036811875}
+    m_TransformParent: {fileID: 1951267459}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ab507233b8811b346b59dee644922baf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.14578
+      value: -1.2258501
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ab507233b8811b346b59dee644922baf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.7760301
+      value: 3.6424198
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ab507233b8811b346b59dee644922baf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.349003
+      value: 13.586037
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ab507233b8811b346b59dee644922baf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5075,6 +5130,7 @@ Transform:
   - {fileID: 169721166}
   - {fileID: 748872515}
   - {fileID: 798322673}
+  - {fileID: 1234893416}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1933873261
@@ -5244,6 +5300,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 201465787}
+  - {fileID: 1744417638}
   m_Father: {fileID: 344777919}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1962825708
