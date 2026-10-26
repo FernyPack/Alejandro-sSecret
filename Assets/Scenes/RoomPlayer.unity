@@ -2452,6 +2452,58 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 100
   m_TargetDisplay: 0
+--- !u!1 &798322672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798322673}
+  - component: {fileID: 798322674}
+  m_Layer: 0
+  m_Name: InventoryPhoneUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &798322673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798322672}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12535, y: 3.36191, z: 68.06953}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1921501258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798322674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798322672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0c3c317f519924190625dfbb36e1e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryPhoneUI
+  inventoryKey: 23
+  phoneKey: 30
+  hideOldHUD: 1
+  showHints: 1
+  panelColor: {r: 0.1, g: 0.1, b: 0.13, a: 0.88}
+  phoneBody: {r: 0.08, g: 0.08, b: 0.1, a: 1}
+  phoneScreen: {r: 0.17, g: 0.24, b: 0.36, a: 1}
+  accentColor: {r: 1, g: 0.84, b: 0.31, a: 1}
 --- !u!1 &803390508
 GameObject:
   m_ObjectHideFlags: 0
@@ -5895,6 +5947,8 @@ GameObject:
   - component: {fileID: 1880889710}
   - component: {fileID: 1880889714}
   - component: {fileID: 1880889715}
+  - component: {fileID: 1880889717}
+  - component: {fileID: 1880889716}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -6103,6 +6157,42 @@ MonoBehaviour:
     amount: 1
   - seedData: {fileID: 11400000, guid: 177c620d5163ff84c9aae1e4402de445, type: 2}
     amount: 1
+--- !u!114 &1880889716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880889707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1174bbb4a1ab3f24784e11dfa0588c3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FallSafety
+  fallDistance: 15
+  groundCheckDistance: 5
+--- !u!114 &1880889717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880889707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f1ce09d4651964f85f4978654b8639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugOverlay
+  showOverlay: 1
+  showHitboxes: 1
+  toggleKey: 94
+  corner: 0
+  moveKey: 95
+  margin: {x: 10, y: 10}
+  overlaySize: {x: 430, y: 150}
+  colliderColor: {r: 0, g: 1, b: 1, a: 1}
+  interactColor: {r: 0, g: 1, b: 0, a: 1}
+  hitColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1921501257
 GameObject:
   m_ObjectHideFlags: 0
@@ -6138,6 +6228,7 @@ Transform:
   - {fileID: 169721166}
   - {fileID: 803390509}
   - {fileID: 748872515}
+  - {fileID: 798322673}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1933873261
