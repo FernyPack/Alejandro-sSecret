@@ -24,7 +24,12 @@ public static class RicoBootstrap
         {
             AddIfMissing<DebugOverlay>(player);
             AddIfMissing<FallSafety>(player);
+            AddIfMissing<RicoHUD>(player);
         }
+
+        // My bag + phone screens (replaces the old text HUD)
+        if (Object.FindFirstObjectByType<RicoHUD>() == null)
+            new GameObject("RicoHUD (auto)").AddComponent<RicoHUD>();
     }
 
     private static void AddIfMissing<T>(GameObject target) where T : Component
