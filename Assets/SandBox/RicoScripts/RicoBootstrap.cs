@@ -24,7 +24,6 @@ public static class RicoBootstrap
         {
             AddIfMissing<DebugOverlay>(player);
             AddIfMissing<FallSafety>(player);
-            AddIfMissing<RicoHUD>(player);
         }
 
         // My bag + phone screens (replaces the old text HUD)
