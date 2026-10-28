@@ -2072,7 +2072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0c3c317f519924190625dfbb36e1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryPhoneUI
-  phoneKey: 31
+  phoneKey: 3
   showHints: 1
   phoneBody: {r: 0.08, g: 0.08, b: 0.1, a: 1}
   phoneScreen: {r: 0.17, g: 0.24, b: 0.36, a: 1}
