@@ -16,7 +16,7 @@ using UnityEngine.UI;
 // While the phone is open the player stops and the mouse appears, so you can tap the apps.
 //
 // CONTROLS
-//   Q         = open / close phone
+//   TAB         = open / close phone
 //   Mouse     = tap an app, or Back / home button to return
 //   Esc       = close phone
 //
@@ -29,10 +29,10 @@ using UnityEngine.UI;
 public class InventoryPhoneUI : MonoBehaviour
 {
     [Header("Controls")]
-    public Key phoneKey = Key.Q;
+    public Key phoneKey = Key.Tab;
 
     [Header("Options")]
-    public bool showHints = true;   // small "[Q] Phone" text in the corner
+    public bool showHints = true;   // small "[TAB] Phone" text in the corner
 
     // EDIT: COLORS (r, g, b, alpha from 0 to 1). You can also change these in the Inspector.
     [Header("Colors")]
