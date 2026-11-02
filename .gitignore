@@ -41,6 +41,12 @@
 
 # Visual Studio cache directory
 .vs/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
 
 # Gradle cache directory
 .gradle/
