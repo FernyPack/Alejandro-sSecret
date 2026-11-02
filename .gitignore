@@ -14,7 +14,13 @@
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 /[Rr]ecordings/
+/[Aa]ssets/_[Rr]ecovery*
 *.log
+
+# Windows / Mac system files              # NEW
+Thumbs.db
+Desktop.ini
+.DS_Store
 
 # Blender backup files
 *.blend1
@@ -23,6 +29,7 @@
 # JetBrains Rider
 /[Aa]ssets/Plugins/Editor/JetBrains*
 *.DotSettings.user
+.idea/
 
 # Visual Studio / VS Code
 .vs/
